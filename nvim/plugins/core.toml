@@ -1,0 +1,127 @@
+
+[[plugins]]
+repo = 'arcticicestudio/nord-vim'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  function! LightlineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+  endfunction
+
+  function! LightlineFilename()
+    if strlen(expand('%:t')) > 40
+      return join(split(expand('%:t'), '\zs')[0:40], "")
+    endif
+    return expand('%:t')
+  endfunction
+  let g:lightline = {
+    \ 'colorscheme': 'nord',
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' },
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component_function': {
+    \   'cocstatus': 'coc#status'
+    \ },
+    \}
+'''
+
+[[plugins]]
+repo = "neoclide/coc.nvim"
+merge = 0
+rev = "release"
+hook_add = '''
+source ~/.config/nvim/plugins/coc.rc.vim
+'''
+
+[[plugins]]
+repo = "Shougo/defx.nvim"
+depends = ["defx-git"]
+hook_add = '''
+source ~/.config/nvim/plugins/defx.rc.vim
+'''
+
+[[plugins]]
+repo ="kristijanhusak/defx-git"
+hook_add = '''
+source ~/.config/nvim/plugins/defx-git.rc.vim
+'''
+
+[[plugins]]
+repo = "Shougo/denite.nvim"
+hook_add = '''
+source ~/.config/nvim/plugins/denite.rc.vim
+'''
+
+[[plugins]]
+repo = "Shougo/deol.nvim"
+hook_add = '''
+source ~/.config/nvim/plugins/deol.rc.vim
+'''
+
+[[plugins]]
+repo = "liuchengxu/vim-which-key"
+hook_add = '''
+nnoremap <silent><Space> :WhichKey '<Space>'<CR>
+'''
+
+[[plugins]]
+repo = "cohama/lexima.vim"
+
+[[plugins]]
+repo = 'w0rp/ale'
+hook_add = '''
+
+let g:ale_linters = {
+  \ 'python': ['flake8'],
+  \ 'latex': ['redpen'],
+  \ 'tex': ['redpen'],
+\}
+
+let g:ale_completion_enabled = 0
+
+let g:ale_echo_msg_error_str = nr2char(0xf421) . ' '
+let g:ale_echo_msg_warning_str = nr2char(0xf420) . ' '
+let g:ale_echo_msg_info_str = nr2char(0xf05a) . ' '
+let g:ale_echo_msg_format = '%severity%  %linter% - %s'
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = g:ale_echo_msg_error_str
+let g:ale_sign_warning = g:ale_echo_msg_warning_str
+let g:ale_statusline_format = [
+      \ g:ale_echo_msg_error_str . ' %d',
+      \ g:ale_echo_msg_warning_str . ' %d',
+      \ nr2char(0xf4a1) . '  ']
+
+let g:ale_tex_chktex_options = "-n 44 24 4"
+let g:ale_lint_on_save=1
+let g:ale_lint_on_text_changed=0
+let g:ale_lint_on_insert_leave=0
+let g:ale_open_list = 1
+let g:ale_linters.tex = ['textlint']
+
+" エラーと警告がなくなっても開いたままにする
+let g:ale_keep_list_window_open = 1
+'''
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+hook_add = '''
+nnoremap <Space>gb :Gblame<CR>
+nnoremap <Space>gd :Gdiff<CR>
+nnoremap <Space>gs :Gstatus<CR>
+'''
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'yuntan/neovim-indent-guides'
+hook_add = '''
+let g:indent_guides_enable_on_vim_startup = 1
+'''

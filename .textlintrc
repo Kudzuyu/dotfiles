@@ -1,0 +1,33 @@
+{
+  "plugins": ["latex2e"],
+  "rules": {
+    "preset-ja-spacing": true,
+    "preset-ja-technical-writing": {
+      "ja-no-mixed-period": {
+        "allowPeriodMarks": ["．"]
+      },
+      "max-kanji-continuous-len": {
+        "max": 10,
+        "allow": ["多目的強化学習", "計測自動制御学会", "二乗平均平方根誤差"]
+      }
+
+    },
+    "spellcheck-tech-word": false,
+    "no-double-negative-ja": true,
+    "ja-no-abusage": true,
+    "ja-no-redundant-expression": true,
+    "prh": {
+      "rulePaths": [
+        "./prh.yml",
+        "./prh_yure.yml"
+      ]
+    },
+    "preset-jtf-style": {
+      "1.2.1.句点(。)と読点(、)": false,
+      "1.2.2.ピリオド(.)とカンマ(,)": false,
+      "4.3.1.丸かっこ（）": false,
+      "4.2.7.コロン(：)": false,
+      "3.3.かっこ類と隣接する文字の間のスペースの有無": false
+    }
+  }
+}
