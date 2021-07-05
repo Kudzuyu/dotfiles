@@ -225,11 +225,11 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(poet-monochrome
+   dotspacemacs-themes '(nord
+                         poet-monochrome
                          minimal-light
                          spacemacs-light
                          leuven
-                         nord
                          spacemacs-dark)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
@@ -249,7 +249,7 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Cica"
-                               :size 11.0
+                               :size 13.0
                                :weight normal
                                :width normal)
 
@@ -387,7 +387,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Show the scroll bar while scrolling. The auto hide time can be configured
    ;; by setting this variable to a number. (default t)
-   dotspacemacs-scroll-bar-while-scrolling t
+   dotspacemacs-scroll-bar-while-scrolling nil
 
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
@@ -605,17 +605,15 @@ before packages are loaded."
   (add-to-list 'org-latex-classes
                '("ieej"
                  "\\documentclass{ieej}
-                 \\usepackage[dvipdfmx]{graphicx}
-                 \\usepackage{amsthm}
-                 \\usepackage{algorithm}
-                 \\usepackage{algorithmic}
-                 \\usepackage[fleqn]{amsmath}
-                 \\usepackage[varg]{txfonts}
-                 \\usepackage{markdown}
-                 \\usepackage[subrefformat=parens]{subcaption}
-                 \\theoremstyle{definition}
-                 \\newtheorem{theorem}{定理}
-                 \\newtheorem{definition}{定義}"
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage{amsthm}
+\\usepackage{algorithm}
+\\usepackage{algorithmic}
+\\usepackage[fleqn]{amsmath}
+\\usepackage[varg]{txfonts}
+\\theoremstyle{definition}
+\\newtheorem{theorem}{定理}
+\\newtheorem{definition}{定義}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -623,6 +621,8 @@ before packages are loaded."
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
                  ))
   ;(setq org-latex-pdf-process '("latexmk %f"))
+  (setq org-latex-default-packages-alist nil)
+  (setq org-latex-with-hyperref nil)
 
   (evil-leader/set-key "/" 'spacemacs/helm-project-do-ag)
   (global-auto-revert-mode 1)
