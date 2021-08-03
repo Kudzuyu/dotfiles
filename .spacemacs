@@ -39,15 +39,13 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      auto-completion
-     better-defaults
-     common-lisp
+     ;better-defaults
      emacs-lisp
-     typescript
-     rust
+     common-lisp
      git
      helm
      lsp
-     racket
+     ;racket
      (latex :variables latex-enable-auto-fill nil)
      ;; markdown
      multiple-cursors
@@ -60,7 +58,8 @@ This function should only modify configuration layer settings."
      ;; spell-checking
      syntax-checking
      ;; version-control
-     treemacs)
+     ;treemacs
+     )
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -71,7 +70,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(helm-org-rifle adaptive-wrap v-mode)
+   dotspacemacs-additional-packages '(helm-org-rifle adaptive-wrap)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -561,21 +560,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump.")
-
-
-(defun dotspacemacs/user-config ()
-  "Configuration for user code:
-This function is called at the very end of Spacemacs startup, after layer
-configuration.
-Put your configuration code here, except for variables that should be set
-before packages are loaded."
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-
-  (setq org-startup-truncated nil)
-  (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
-  (remove-hook 'find-file-hooks 'vc-find-file-hook)
+dump."
 
   (require 'ox-latex)
   (add-to-list 'org-latex-classes
@@ -626,6 +611,22 @@ before packages are loaded."
   ;(setq org-latex-pdf-process '("latexmk %f"))
   (setq org-latex-default-packages-alist nil)
   (setq org-latex-with-hyperref nil)
+  )
+
+
+(defun dotspacemacs/user-config ()
+  "Configuration for user code:
+This function is called at the very end of Spacemacs startup, after layer
+configuration.
+Put your configuration code here, except for variables that should be set
+before packages are loaded."
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+
+  (setq org-startup-truncated nil)
+  (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
+  (remove-hook 'find-file-hooks 'vc-find-file-hook)
+
 
   (evil-leader/set-key "/" 'spacemacs/helm-project-do-ag)
   (global-auto-revert-mode 1)
@@ -639,11 +640,6 @@ before packages are loaded."
   (setq org-journal-date-format "%Y/%m/%d, %A")
   (setq org-journal-time-format "%R\n")
   (setq org-journal-find-file 'find-file)
-
-  (require 'v-mode)
-  (define-key v-mode-map (kbd "M-z") 'v-menu)
-  (define-key v-mode-map (kbd "<f6>")  'v-menu)
-  (define-key v-mode-map (kbd "C-c C-f") 'v-format-buffer)
 
   (load (expand-file-name "~/.roswell/helper.el"))
   )
