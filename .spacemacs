@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(graphviz
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -41,7 +41,7 @@ This function should only modify configuration layer settings."
      auto-completion
      ;better-defaults
      emacs-lisp
-     common-lisp
+     ;common-lisp
      git
      helm
      lsp
@@ -561,8 +561,45 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
+  )
 
+
+(defun dotspacemacs/user-config ()
+  "Configuration for user code:
+This function is called at the very end of Spacemacs startup, after layer
+configuration.
+Put your configuration code here, except for variables that should be set
+before packages are loaded."
   (require 'ox-latex)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+
+  (setq org-startup-truncated nil)
+  (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
+  (remove-hook 'find-file-hooks 'vc-find-file-hook)
+
+
+  (evil-leader/set-key "/" 'spacemacs/helm-project-do-ag)
+  (global-auto-revert-mode 1)
+
+  (when (eq system-type 'windows-nt)
+    (setq org-journal-dir "p:/org/Journal/")
+    (setq org-ref-default-bibliography '("p:/org/Papers/References.bib")
+          org-ref-pdf-directory "p:/org/Resources/"
+          org-ref-bibliography-notes "p:/org/Papers/Notes.org")
+    )
+  (when (eq system-type 'gnu/linux)
+    (setq org-journal-dir "~/pCloudDrive/org/Journal/")
+    (setq org-ref-default-bibliography '("~/pCloudDrive/org/Papers/References.bib")
+          org-ref-pdf-directory "~/pCloudDrive/org/Resources/"
+          org-ref-bibliography-notes "~/pCloudDrive/Papers/org/Notes.org")
+    )
+
+  (setq org-journal-date-prefix "#+TITLE: ")
+  (setq org-journal-date-format "%Y/%m/%d, %A")
+  (setq org-journal-time-format "%R\n")
+  (setq org-journal-find-file 'find-file)
+
   (add-to-list 'org-latex-classes
                '("jsarticle"
                  "\\documentclass{jsarticle}"
@@ -577,6 +614,7 @@ dump."
                  \\usepackage[stable]{footmisc}
                  \\usepackage{algorithm}
                  \\usepackage{algorithmic}
+                 \\usepackage{listings}
                  \\usepackage{markdown}
                  \\usepackage[subrefformat=parens]{subcaption}
                  \\pagestyle{plain}
@@ -597,6 +635,7 @@ dump."
 \\usepackage{amsthm}
 \\usepackage{algorithm}
 \\usepackage{algorithmic}
+\\usepackage{mathptmx}
 \\usepackage[fleqn]{amsmath}
 \\usepackage[varg]{txfonts}
 \\theoremstyle{definition}
@@ -608,40 +647,37 @@ dump."
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
                  ))
+  (add-to-list 'org-latex-classes
+               '("arob"
+                 "\\documentclass[twocolumn,draft]{svjour3}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage{algorithm}
+\\usepackage{algorithmic}
+\\usepackage[fleqn]{amsmath}
+\\usepackage[varg]{txfonts}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+                 ))
+  (add-to-list 'org-latex-classes
+               '("arob-final"
+                 "\\documentclass[twocolumn,final]{svjour3}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage{algorithm}
+\\usepackage{algorithmic}
+\\usepackage[fleqn]{amsmath}
+\\usepackage[varg]{txfonts}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+                 ))
   ;(setq org-latex-pdf-process '("latexmk %f"))
   (setq org-latex-default-packages-alist nil)
   (setq org-latex-with-hyperref nil)
-  )
-
-
-(defun dotspacemacs/user-config ()
-  "Configuration for user code:
-This function is called at the very end of Spacemacs startup, after layer
-configuration.
-Put your configuration code here, except for variables that should be set
-before packages are loaded."
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-
-  (setq org-startup-truncated nil)
-  (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode)
-  (remove-hook 'find-file-hooks 'vc-find-file-hook)
-
-
-  (evil-leader/set-key "/" 'spacemacs/helm-project-do-ag)
-  (global-auto-revert-mode 1)
-
-  (when (eq system-type 'windows-nt)
-    (setq org-journal-dir "p:/org/Journal/"))
-  (when (eq system-type 'gnu/linux)
-    (setq org-journal-dir "~/pCloudDrive/org/Journal/"))
-
-  (setq org-journal-date-prefix "#+TITLE: ")
-  (setq org-journal-date-format "%Y/%m/%d, %A")
-  (setq org-journal-time-format "%R\n")
-  (setq org-journal-find-file 'find-file)
-
-  (load (expand-file-name "~/.roswell/helper.el"))
   )
 
 
@@ -658,8 +694,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-want-Y-yank-to-eol nil)
+ '(org-agenda-files '("~/Dropbox/AROB_Journal2021/main.org"))
  '(package-selected-packages
-   '(web-beautify tide typescript-mode prettier-js npm-mode nodejs-repl livid-mode skewer-mode simple-httpd json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc racket-mode slime-company slime common-lisp-snippets adaptive-wrap lsp-latex company-reftex company-math math-symbol-lists company-auctex auctex-latexmk auctex lsp-ui lsp-treemacs lsp-origami origami helm-lsp lsp-mode markdown-mode flycheck-pos-tip pos-tip minimal-theme org-ref pdf-tools key-chord ivy tablist helm-bibtex bibtex-completion biblio parsebib biblio-core yasnippet-snippets ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons smeargle restart-emacs rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer orgit org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink org-brain open-junk-file nord-theme nameless mwim multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+   '(graphviz-dot-mode web-beautify tide typescript-mode prettier-js npm-mode nodejs-repl livid-mode skewer-mode simple-httpd json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc racket-mode slime-company slime common-lisp-snippets adaptive-wrap lsp-latex company-reftex company-math math-symbol-lists company-auctex auctex-latexmk auctex lsp-ui lsp-treemacs lsp-origami origami helm-lsp lsp-mode markdown-mode flycheck-pos-tip pos-tip minimal-theme org-ref pdf-tools key-chord ivy tablist helm-bibtex bibtex-completion biblio parsebib biblio-core yasnippet-snippets ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons smeargle restart-emacs rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer orgit org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink org-brain open-junk-file nord-theme nameless mwim multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
